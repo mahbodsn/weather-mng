@@ -21,7 +21,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class WeatherSearchByCoordinateStrategy implements WeatherSearchStrategy {
+public class WeatherSearchByCityStrategy implements WeatherSearchStrategy {
 
 	private final VisualCrossingClient client;
 
@@ -35,17 +35,16 @@ public class WeatherSearchByCoordinateStrategy implements WeatherSearchStrategy 
 		var startDate = DateUtil.epochToLocalDate(model.timeCriteria().from());
 		var endDate = DateUtil.epochToLocalDate(model.timeCriteria().to());
 		logger.debug("search start date -> [{}] and end date -> [{}], coordinate -> [{}]", startDate, endDate,
-				model.coordinate());
-		var response = this.client.getWeatherByCoordinates(model.coordinate().latitude(), model.coordinate().longitude(),
-				startDate.format(DateTimeFormatter.ISO_DATE), endDate.format(DateTimeFormatter.ISO_DATE));
+				model.cityName());
+		var response = client.getWeatherByCityName(model.cityName(), startDate.format(DateTimeFormatter.ISO_DATE),
+				endDate.format(DateTimeFormatter.ISO_DATE));
 		logger.debug("weather provider search response is -> {}", response);
-		metricService.sendCounterMetric(new MetricCounterModel(Metrics.WEATHER_SEARCH_CITY.getKey(), 1, Map.of("type", getSearchType().name())));
+		metricService.sendCounterMetric(new MetricCounterModel(Metrics.WEATHER_SEARCH_CITY.getKey(), 1, Map.of("type", WeatherSearchType.CITY.name())));
 		return this.mapper.toWeatherSearchResult(response);
 	}
 
 	@Override
 	public WeatherSearchType getSearchType() {
-		return WeatherSearchType.COORDINATE;
+		return WeatherSearchType.CITY;
 	}
-
 }

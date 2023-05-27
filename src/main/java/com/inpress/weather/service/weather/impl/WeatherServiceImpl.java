@@ -6,8 +6,10 @@ import com.inpress.weather.service.weather.WeatherService;
 import com.inpress.weather.service.weather.mapper.WeatherServiceMapper;
 import com.inpress.weather.service.weather.model.WeatherSearchModel;
 import com.inpress.weather.service.weather.model.WeatherSearchResult;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
