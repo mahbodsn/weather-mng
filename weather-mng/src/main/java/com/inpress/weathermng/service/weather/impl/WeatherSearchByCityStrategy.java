@@ -30,7 +30,8 @@ public class WeatherSearchByCityStrategy implements WeatherSearchStrategy {
 
 	private final MetricService metricService;
 
-	@Cacheable(cacheNames = "weatherSearchByCity", key = "#model.searchType().name() + #model.cityName() + " + "#model.timeCriteria().from() + #model.timeCriteria().to()")
+	@Cacheable(cacheNames = "weatherSearchByCity", key = "#model.searchType().name()+#model.cityName()" +
+			"+#model.timeCriteria().from()+#model.timeCriteria().to()")
 	@Override
 	public WeatherSearchResult search(WeatherSearchModel model) throws BusinessException {
 		logger.debug("going to search weather with -> {}", this.getSearchType());
